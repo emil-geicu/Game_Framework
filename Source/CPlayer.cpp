@@ -31,7 +31,7 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer)
 	r.right = 128;
 	r.bottom = 128;
 
-	m_pExplosionSprite	= new AnimatedSprite("data/explosion.bmp", "data/explosionmask.bmp", r, 4);
+	m_pExplosionSprite	= new AnimatedSprite("data/explosion.bmp", "data/explosionmask.bmp", r, 16);
 	m_pExplosionSprite->setBackBuffer( pBackBuffer );
 	m_bExplosion		= false;
 	m_iExplosionFrame	= 0;

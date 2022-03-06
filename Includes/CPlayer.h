@@ -15,7 +15,6 @@
 //-----------------------------------------------------------------------------
 #include "Main.h"
 #include "Sprite.h"
-
 //-----------------------------------------------------------------------------
 // Main Class Definitions
 //-----------------------------------------------------------------------------
@@ -72,6 +71,6 @@ private:
 	bool					m_bExplosion;
 	AnimatedSprite*			m_pExplosionSprite;
 	int						m_iExplosionFrame;
-};
+};	
 
 #endif // _CPLAYER_H_
