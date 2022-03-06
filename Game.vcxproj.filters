@@ -83,7 +83,7 @@
     <ClInclude Include="Res\resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="Includes\Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

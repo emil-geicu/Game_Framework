@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 #include "Main.h"
 #include "Sprite.h"
+#include <list>
 //-----------------------------------------------------------------------------
 // Main Class Definitions
 //-----------------------------------------------------------------------------
@@ -45,9 +46,9 @@ public:
 	void					Update(float dt);
 	void					Draw();
 	void					Move(ULONG ulDirection);
-	Vec2& Position();
-	Vec2& Velocity();
-
+	Vec2&					Position();
+	Vec2&					Velocity();
+	bool					outsideScreen = false;
 
 private:
 	//-------------------------------------------------------------------------
@@ -56,6 +57,7 @@ private:
 	Sprite* m_pSprite;
 	ESpeedStates			m_eSpeedState;
 	float					m_fTimer;
+	
 };
 
 #endif

@@ -17,7 +17,9 @@
 #include "CPlayer.h"
 #include "BackBuffer.h"
 #include "ImageFile.h"
-
+#include "Bullet.h"
+#include <list>
+#include <iterator>
 //-----------------------------------------------------------------------------
 // Forward Declarations
 //-----------------------------------------------------------------------------
@@ -91,6 +93,8 @@ private:
 	BackBuffer*				m_pBBuffer;
 	CPlayer*				m_pPlayer;
 	CPlayer*				ally_pPlayer;
+	std::list<Bullet*>		bullet;
+	
 };
 
 #endif // _CGAMEAPP_H_

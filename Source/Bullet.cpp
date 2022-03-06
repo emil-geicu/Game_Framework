@@ -31,9 +31,10 @@ void Bullet::Update(float dt)
 
 	// Get velocity
 	double v = m_pSprite->mVelocity.Magnitude();
-
-
 	
+	if (m_pSprite->mPosition.y < 0)
+		outsideScreen = true;
+
 }
 
 void Bullet::Draw()
@@ -43,6 +44,9 @@ void Bullet::Draw()
 
 void Bullet::Move(ULONG ulDirection)
 {
-	m_pSprite->mVelocity.y = -40;
+
+	if (ulDirection & Bullet::DIR_FORWARD)
+		m_pSprite->mVelocity.y -= 500;
+
 }
 

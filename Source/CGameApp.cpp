@@ -264,7 +264,8 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				break;
 			case VK_SPACE:
 				fTimer=SetTimer(m_hWnd, 1, 250, NULL);
-
+				//////
+				break;
 			}
 			break;
 
@@ -299,9 +300,9 @@ bool CGameApp::BuildObjects()
 	m_pBBuffer = new BackBuffer(m_hWnd, m_nViewWidth, m_nViewHeight);
 	m_pPlayer = new CPlayer(m_pBBuffer);
 	ally_pPlayer = new CPlayer(m_pBBuffer);
-
 	if(!m_imgBackground.LoadBitmapFromFile("data/background.bmp", GetDC(m_hWnd)))
 		return false;
+
 
 	// Success!
 	return true;
@@ -315,6 +316,8 @@ void CGameApp::SetupGameState()
 {
 	m_pPlayer->Position() = Vec2(100, 400);
 	ally_pPlayer->Position() = Vec2(400, 300);
+	for(auto& it: bullet)
+		it->Position() = m_pPlayer->Position();
 }
 
 //-----------------------------------------------------------------------------
@@ -395,10 +398,19 @@ void CGameApp::ProcessInput( )
 	if ( pKeyBuffer[ VK_LEFT  ] & 0xF0 ) Direction |= CPlayer::DIR_LEFT;
 	if ( pKeyBuffer[ VK_RIGHT ] & 0xF0 ) Direction |= CPlayer::DIR_RIGHT;
 
+	if (pKeyBuffer[VK_SPACE] & 0xF0) {
+		
+		Bullet* b = new Bullet(m_pBBuffer);
+		bullet.push_back(b);
+		m_pPlayer->FireBullet(b);
+	}
 	
 	// Move the player
 	m_pPlayer->Move(Direction);
-
+	
+	
+	
+		
 
 	// Now process the mouse (if the button is pressed)
 	if ( GetCapture() == m_hWnd )
@@ -423,6 +435,10 @@ void CGameApp::AnimateObjects()
 {
 	m_pPlayer->Update(m_Timer.GetTimeElapsed());
 	ally_pPlayer->Update(m_Timer.GetTimeElapsed());
+
+	for(auto &it:bullet)
+		it->Update(m_Timer.GetTimeElapsed());
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -434,8 +450,26 @@ void CGameApp::DrawObjects()
 	m_pBBuffer->reset();
 
 	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, 0);
-
 	m_pPlayer->Draw();
 	ally_pPlayer->Draw();
+
+
+	if (!bullet.empty()) {
+		for (auto it = bullet.begin(); it != bullet.end();)
+		{
+			if ((*it)->outsideScreen) {
+				auto currentBullet = it;
+				it++;
+				delete *currentBullet;
+				bullet.remove(*currentBullet);
+
+			}
+			else {
+				(*it)->Draw();
+				it++;
+			}
+		}
+	}
+
 	m_pBBuffer->present();
 }

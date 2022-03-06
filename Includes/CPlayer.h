@@ -57,9 +57,9 @@ public:
 	void					Move(ULONG ulDirection);
 	Vec2&					Position();
 	Vec2&					Velocity();
-	void					FireBullets();
 	void					Explode();
 	bool					AdvanceExplosion();
+	void					FireBullet(Bullet *b);
 
 private:
 	//-------------------------------------------------------------------------

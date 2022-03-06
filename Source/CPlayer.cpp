@@ -11,7 +11,7 @@
 // CPlayer Specific Includes
 //-----------------------------------------------------------------------------
 #include "CPlayer.h"
-
+#include "Bullet.h"
 //-----------------------------------------------------------------------------
 // Name : CPlayer () (Constructor)
 // Desc : CPlayer Class Constructor
@@ -149,9 +149,7 @@ Vec2& CPlayer::Velocity()
 {
 	return m_pSprite->mVelocity;
 }
-//void CPlayer::FireBullets() {
-//	m_bulletSprite.Position()
-//}
+
 void CPlayer::Explode()
 {
 	m_pExplosionSprite->mPosition = m_pSprite->mPosition;
@@ -162,18 +160,25 @@ void CPlayer::Explode()
 
 bool CPlayer::AdvanceExplosion()
 {
-	if(m_bExplosion)
+	if (m_bExplosion)
 	{
 		m_pExplosionSprite->SetFrame(m_iExplosionFrame++);
-		if(m_iExplosionFrame==m_pExplosionSprite->GetFrameCount())
+		if (m_iExplosionFrame == m_pExplosionSprite->GetFrameCount())
 		{
 			m_bExplosion = false;
 			m_iExplosionFrame = 0;
-			m_pSprite->mVelocity = Vec2(0,0);
+			m_pSprite->mVelocity = Vec2(0, 0);
 			m_eSpeedState = SPEED_STOP;
 			return false;
 		}
 	}
 
 	return true;
+}
+
+void CPlayer::FireBullet(Bullet* b)
+{
+	b->Position().x = m_pSprite->mPosition.x;
+	b->Position().y = m_pSprite->mPosition.y-60;
+	b->Move(Bullet::DIR_FORWARD);
 }
