@@ -28,6 +28,7 @@ CGameApp::CGameApp()
 	m_hMenu			= NULL;
 	m_pBBuffer		= NULL;
 	m_pPlayer		= NULL;
+	ally_pPlayer	= NULL;
 	m_LastFrameRate = 0;
 }
 
@@ -257,6 +258,10 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				fTimer = SetTimer(m_hWnd, 1, 250, NULL);
 				m_pPlayer->Explode();
 				break;
+			case 0x51:
+				fTimer = SetTimer(m_hWnd, 1, 250, NULL);
+				ally_pPlayer->Explode();
+				break;
 			}
 			break;
 
@@ -265,6 +270,8 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 			{
 			case 1:
 				if(!m_pPlayer->AdvanceExplosion())
+					KillTimer(m_hWnd, 1);
+				if(!ally_pPlayer->AdvanceExplosion())
 					KillTimer(m_hWnd, 1);
 			}
 			break;
@@ -288,6 +295,7 @@ bool CGameApp::BuildObjects()
 {
 	m_pBBuffer = new BackBuffer(m_hWnd, m_nViewWidth, m_nViewHeight);
 	m_pPlayer = new CPlayer(m_pBBuffer);
+	ally_pPlayer = new CPlayer(m_pBBuffer);
 
 	if(!m_imgBackground.LoadBitmapFromFile("data/background.bmp", GetDC(m_hWnd)))
 		return false;
@@ -303,6 +311,7 @@ bool CGameApp::BuildObjects()
 void CGameApp::SetupGameState()
 {
 	m_pPlayer->Position() = Vec2(100, 400);
+	ally_pPlayer->Position() = Vec2(400, 300);
 }
 
 //-----------------------------------------------------------------------------
@@ -316,6 +325,10 @@ void CGameApp::ReleaseObjects( )
 	{
 		delete m_pPlayer;
 		m_pPlayer = NULL;
+	}
+	if (ally_pPlayer != NULL) {
+		delete ally_pPlayer;
+		ally_pPlayer= NULL;
 	}
 
 	if(m_pBBuffer != NULL)
@@ -406,6 +419,7 @@ void CGameApp::ProcessInput( )
 void CGameApp::AnimateObjects()
 {
 	m_pPlayer->Update(m_Timer.GetTimeElapsed());
+	ally_pPlayer->Update(m_Timer.GetTimeElapsed());
 }
 
 //-----------------------------------------------------------------------------
@@ -419,6 +433,6 @@ void CGameApp::DrawObjects()
 	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, 0);
 
 	m_pPlayer->Draw();
-
+	ally_pPlayer->Draw();
 	m_pBBuffer->present();
 }

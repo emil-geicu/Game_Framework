@@ -90,6 +90,7 @@ private:
 
 	BackBuffer*				m_pBBuffer;
 	CPlayer*				m_pPlayer;
+	CPlayer*				ally_pPlayer;
 };
 
 #endif // _CGAMEAPP_H_
