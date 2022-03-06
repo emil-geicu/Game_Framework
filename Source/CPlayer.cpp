@@ -108,16 +108,35 @@ void CPlayer::Draw()
 void CPlayer::Move(ULONG ulDirection)
 {
 	if( ulDirection & CPlayer::DIR_LEFT )
-		m_pSprite->mVelocity.x -= .1;
+		m_pSprite->mVelocity.x -= 1.1;
 
+	if (m_pSprite->mPosition.x <= 0 + m_pSprite->width() / 2) {
+		m_pSprite->mVelocity.x = 0;
+		m_pSprite->mVelocity.x++;
+	}
 	if( ulDirection & CPlayer::DIR_RIGHT )
-		m_pSprite->mVelocity.x += .1;
+		m_pSprite->mVelocity.x += 1.1;
+
+	if (m_pSprite->mPosition.x >= 800 - m_pSprite->width() / 2-15) {
+		m_pSprite->mVelocity.x = 0;
+		m_pSprite->mVelocity.x--;
+	}
 
 	if( ulDirection & CPlayer::DIR_FORWARD )
-		m_pSprite->mVelocity.y -= .1;
+		m_pSprite->mVelocity.y -= 1.1;
+
+	if (m_pSprite->mPosition.y <= 0 + m_pSprite->height()/2) {
+		m_pSprite->mVelocity.y = 0;
+		m_pSprite->mVelocity.y++;
+	}
 
 	if( ulDirection & CPlayer::DIR_BACKWARD )
-		m_pSprite->mVelocity.y += .1;
+		m_pSprite->mVelocity.y += 1.1;
+
+	if (m_pSprite->mPosition.y >= 600 - m_pSprite->height()+35) {
+		m_pSprite->mVelocity.y = 0;
+		m_pSprite->mVelocity.y--;
+	}
 }
 
 
