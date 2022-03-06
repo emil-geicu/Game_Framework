@@ -149,7 +149,9 @@ Vec2& CPlayer::Velocity()
 {
 	return m_pSprite->mVelocity;
 }
-
+//void CPlayer::FireBullets() {
+//	m_bulletSprite.Position()
+//}
 void CPlayer::Explode()
 {
 	m_pExplosionSprite->mPosition = m_pSprite->mPosition;

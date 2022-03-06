@@ -262,6 +262,9 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				fTimer = SetTimer(m_hWnd, 1, 250, NULL);
 				ally_pPlayer->Explode();
 				break;
+			case VK_SPACE:
+				fTimer=SetTimer(m_hWnd, 1, 250, NULL);
+
 			}
 			break;
 
