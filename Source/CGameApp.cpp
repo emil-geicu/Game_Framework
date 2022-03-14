@@ -416,7 +416,9 @@ void CGameApp::ProcessInput( )
 	}
 	
 	// Move the player
+	m_pPlayer->Collsion(ally_pPlayer);
 	m_pPlayer->Move(Direction);
+
 	
 	
 	

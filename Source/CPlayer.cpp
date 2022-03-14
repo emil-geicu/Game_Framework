@@ -266,5 +266,17 @@ void CPlayer::RotateRight(const BackBuffer* pBackBuffer) {
 	m_pSprite->mPosition = retainedPosition;
 	m_pSprite->mVelocity = retainedVelocity;
 	m_pSprite->setBackBuffer(pBackBuffer);
+}
+void CPlayer::Collsion(CPlayer* player2) {
+	
+	if (m_pSprite->mPosition.x + m_pSprite->width()>player2->m_pSprite->mPosition.x            &&
+		m_pSprite->mPosition.x < player2->m_pSprite->mPosition.x + player2->m_pSprite->width() &&
+		m_pSprite->mPosition.y + m_pSprite->height() > player2->m_pSprite->mPosition.y         &&
+		m_pSprite->mPosition.y < player2->m_pSprite->mPosition.y + player2->m_pSprite->height())
+	{	
+		m_pSprite->mVelocity.x = 0;
+		m_pSprite->mVelocity.y = 0;
+	
+	}
 
 }

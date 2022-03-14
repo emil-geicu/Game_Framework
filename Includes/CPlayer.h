@@ -65,6 +65,8 @@ public:
 
 	void RotateRight(const BackBuffer* pBackBuffer);
 
+	void Collsion(CPlayer* player2);
+
 private:
 	//-------------------------------------------------------------------------
 	// Private Variables for This Class.
