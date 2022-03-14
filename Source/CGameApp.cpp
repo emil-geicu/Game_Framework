@@ -263,8 +263,13 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				ally_pPlayer->Explode();
 				break;
 			case VK_SPACE:
-				fTimer=SetTimer(m_hWnd, 1, 250, NULL);
-				//////
+				fTimer = SetTimer(m_hWnd, 1, 250, NULL);
+				break;
+			case 'L':
+				loadGame();
+				break;
+			case 'K':
+				SaveGame();
 				break;
 			}
 			break;
@@ -472,4 +477,19 @@ void CGameApp::DrawObjects()
 	}
 
 	m_pBBuffer->present();
+}
+void CGameApp::loadGame() {
+	f.open("SaveGame.txt", std::ifstream::in);
+	int x1, x2, y1, y2;
+	f >> x1 >> y1 >> x2 >> y2;
+	m_pPlayer->Position() = Vec2(x1, y1);
+	ally_pPlayer->Position() = Vec2(x2, y2);
+	f.close();
+}
+void CGameApp::SaveGame() {
+	
+	g.open("SaveGame.txt", std::ofstream::out);
+	g << (int)m_pPlayer->Position().x << " " << (int)m_pPlayer->Position().y << std::endl;
+	g << (int)ally_pPlayer->Position().x << " " << (int)ally_pPlayer->Position().y << std::endl;
+	g.close();
 }

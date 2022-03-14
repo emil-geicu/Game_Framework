@@ -19,6 +19,7 @@
 #include "ImageFile.h"
 #include "Bullet.h"
 #include <list>
+#include <fstream>
 #include <iterator>
 //-----------------------------------------------------------------------------
 // Forward Declarations
@@ -48,7 +49,8 @@ public:
 	bool		InitInstance( LPCTSTR lpCmdLine, int iCmdShow );
 	int		 BeginGame( );
 	bool		ShutDown( );
-	
+	std::ifstream f;
+	std::ofstream g;
 private:
 	//-------------------------------------------------------------------------
 	// Private Functions for This Class
@@ -61,6 +63,8 @@ private:
 	void		SetupGameState	( );
 	void		AnimateObjects	( );
 	void		DrawObjects	   ( );
+	void		loadGame();
+	void		SaveGame();
 	void		ProcessInput	  ( );
 	
 	//-------------------------------------------------------------------------
