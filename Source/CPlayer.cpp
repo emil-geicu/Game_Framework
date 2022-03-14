@@ -23,7 +23,7 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer)
 	m_pSprite->setBackBuffer( pBackBuffer );
 	m_eSpeedState = SPEED_STOP;
 	m_fTimer = 0;
-
+	planeDirection = DIRECTION::DIR_FORWARD;
 	// Animation frame crop rectangle
 	RECT r;
 	r.left = 0;
@@ -181,4 +181,68 @@ void CPlayer::FireBullet(Bullet* b)
 	b->Position().x = m_pSprite->mPosition.x;
 	b->Position().y = m_pSprite->mPosition.y-60;
 	b->Move(Bullet::DIR_FORWARD);
+}
+void CPlayer::RotateLeft(const BackBuffer* pBackBuffer) {
+	Vec2 retainedPosition = m_pSprite->mPosition;
+	Vec2 retainedVelocity = m_pSprite->mVelocity;
+
+	if (m_bExplosion == false) {
+		switch (planeDirection)
+		{
+		case CPlayer::DIR_FORWARD:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskWest.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_LEFT;
+			break;
+		case CPlayer::DIR_BACKWARD:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskEast.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_RIGHT;
+			break;
+		case CPlayer::DIR_LEFT:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskSouth.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_BACKWARD;
+			break;
+		case CPlayer::DIR_RIGHT:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskNorth.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_FORWARD;
+			break;
+		default:
+			break;
+		}
+	}
+	m_pSprite->mPosition = retainedPosition;
+	m_pSprite->mVelocity = retainedVelocity;
+	m_pSprite->setBackBuffer(pBackBuffer);
+
+}
+void CPlayer::RotateRight(const BackBuffer* pBackBuffer) {
+	Vec2 retainedPosition = m_pSprite->mPosition;
+	Vec2 retainedVelocity = m_pSprite->mVelocity;
+
+	if (m_bExplosion == false) {
+		switch (planeDirection)
+		{
+		case CPlayer::DIR_FORWARD:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskEast.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_RIGHT;
+			break;
+		case CPlayer::DIR_BACKWARD:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskWest.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_LEFT;
+			break;
+		case CPlayer::DIR_LEFT:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskNorth.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_FORWARD;
+			break;
+		case CPlayer::DIR_RIGHT:
+			m_pSprite = new Sprite("data/PlaneImgAndMaskSouth.bmp", RGB(0xff, 0x00, 0xff));
+			planeDirection = CPlayer::DIR_BACKWARD;
+			break;
+		default:
+			break;
+		}
+	}
+	m_pSprite->mPosition = retainedPosition;
+	m_pSprite->mVelocity = retainedVelocity;
+	m_pSprite->setBackBuffer(pBackBuffer);
+
 }

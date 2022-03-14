@@ -271,6 +271,11 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 			case 'K':
 				SaveGame();
 				break;
+			case 'O':
+				m_pPlayer->RotateLeft(m_pBBuffer);
+				break;
+			case 'P':
+				m_pPlayer->RotateRight(m_pBBuffer);
 			}
 			break;
 

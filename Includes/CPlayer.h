@@ -61,6 +61,10 @@ public:
 	bool					AdvanceExplosion();
 	void					FireBullet(Bullet *b);
 
+	void RotateLeft(const BackBuffer* pBackBuffer);
+
+	void RotateRight(const BackBuffer* pBackBuffer);
+
 private:
 	//-------------------------------------------------------------------------
 	// Private Variables for This Class.
@@ -68,7 +72,7 @@ private:
 	Sprite*					m_pSprite;
 	ESpeedStates			m_eSpeedState;
 	float					m_fTimer;
-
+	DIRECTION				planeDirection;
 	bool					m_bExplosion;
 	AnimatedSprite*			m_pExplosionSprite;
 	int						m_iExplosionFrame;
