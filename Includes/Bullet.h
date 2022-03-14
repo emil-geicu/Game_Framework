@@ -46,6 +46,7 @@ public:
 	void					Update(float dt);
 	void					Draw();
 	void					Move(ULONG ulDirection);
+	void ChangeDirection(ULONG ulDirection, const BackBuffer* pBackBuffer);
 	Vec2&					Position();
 	Vec2&					Velocity();
 	bool					outsideScreen = false;

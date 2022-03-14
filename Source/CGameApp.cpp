@@ -412,7 +412,7 @@ void CGameApp::ProcessInput( )
 		
 		Bullet* b = new Bullet(m_pBBuffer);
 		bullet.push_back(b);
-		m_pPlayer->FireBullet(b);
+		m_pPlayer->FireBullet(b,m_pBBuffer);
 	}
 	
 	// Move the player

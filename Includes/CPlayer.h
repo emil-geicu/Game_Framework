@@ -59,7 +59,7 @@ public:
 	Vec2&					Velocity();
 	void					Explode();
 	bool					AdvanceExplosion();
-	void					FireBullet(Bullet *b);
+	void					FireBullet(Bullet *b, const BackBuffer* pBackBuffer);
 
 	void RotateLeft(const BackBuffer* pBackBuffer);
 

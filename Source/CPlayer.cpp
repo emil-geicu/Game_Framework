@@ -176,11 +176,33 @@ bool CPlayer::AdvanceExplosion()
 	return true;
 }
 
-void CPlayer::FireBullet(Bullet* b)
+void CPlayer::FireBullet(Bullet* b, const BackBuffer* pBackBuffer)
 {
-	b->Position().x = m_pSprite->mPosition.x;
-	b->Position().y = m_pSprite->mPosition.y-60;
-	b->Move(Bullet::DIR_FORWARD);
+	if (planeDirection == CPlayer::DIR_FORWARD)
+	{
+		b->Position().x = m_pSprite->mPosition.x;
+		b->Position().y = m_pSprite->mPosition.y - 80;
+		b->ChangeDirection(planeDirection, pBackBuffer);
+	}
+	if (planeDirection == CPlayer::DIR_BACKWARD)
+	{
+		b->Position().x = m_pSprite->mPosition.x;
+		b->Position().y = m_pSprite->mPosition.y +80;
+		b->ChangeDirection(planeDirection, pBackBuffer);
+	}
+	if (planeDirection == CPlayer::DIR_LEFT)
+	{
+		b->Position().x = m_pSprite->mPosition.x-80;
+		b->Position().y = m_pSprite->mPosition.y;
+		b->ChangeDirection(planeDirection, pBackBuffer);
+	}
+	if (planeDirection == CPlayer::DIR_RIGHT)
+	{
+		b->Position().x = m_pSprite->mPosition.x+80;
+		b->Position().y = m_pSprite->mPosition.y;
+		b->ChangeDirection(planeDirection, pBackBuffer);
+	}
+	b->Move(planeDirection);
 }
 void CPlayer::RotateLeft(const BackBuffer* pBackBuffer) {
 	Vec2 retainedPosition = m_pSprite->mPosition;
@@ -209,7 +231,7 @@ void CPlayer::RotateLeft(const BackBuffer* pBackBuffer) {
 			break;
 		}
 	}
-	m_pSprite->mPosition = retainedPosition;
+	m_pSprite->mPosition = retainedPosition;	
 	m_pSprite->mVelocity = retainedVelocity;
 	m_pSprite->setBackBuffer(pBackBuffer);
 
