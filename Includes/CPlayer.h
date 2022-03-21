@@ -16,6 +16,7 @@
 #include "Main.h"
 #include "Sprite.h"
 #include "Bullet.h"
+#include "SpriteManipulation.h"
 //-----------------------------------------------------------------------------
 // Main Class Definitions
 //-----------------------------------------------------------------------------
@@ -23,7 +24,7 @@
 // Name : CPlayer (Class)
 // Desc : Player class handles all player manipulation, update and management.
 //-----------------------------------------------------------------------------
-class CPlayer
+class CPlayer:public SpriteManipulation
 {
 public:
 	//-------------------------------------------------------------------------
@@ -78,6 +79,9 @@ private:
 	bool					m_bExplosion;
 	AnimatedSprite*			m_pExplosionSprite;
 	int						m_iExplosionFrame;
+	
+
+	bool					alive;
 };	
 
 #endif // _CPLAYER_H_

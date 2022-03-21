@@ -35,6 +35,8 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer)
 	m_pExplosionSprite->setBackBuffer( pBackBuffer );
 	m_bExplosion		= false;
 	m_iExplosionFrame	= 0;
+
+	alive = true;
 }
 
 //-----------------------------------------------------------------------------

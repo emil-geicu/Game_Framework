@@ -151,6 +151,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Crate.cpp" />
+    <ClCompile Include="Lives.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Source\BackBuffer.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\CGameApp.cpp">
@@ -172,9 +175,11 @@
     </ClCompile>
     <ClCompile Include="Source\ResizeEngine.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\SpriteManipulation.cpp" />
     <ClCompile Include="Source\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crate.h" />
     <ClInclude Include="Includes\BackBuffer.h" />
     <ClInclude Include="Includes\Bullet.h" />
     <ClInclude Include="Includes\CGameApp.h" />
@@ -185,8 +190,11 @@
     <ClInclude Include="Includes\Main.h" />
     <ClInclude Include="Includes\ResizeEngine.h" />
     <ClInclude Include="Includes\Sprite.h" />
+    <ClInclude Include="Includes\SpriteManipulation.h" />
     <ClInclude Include="Includes\Vec2.h" />
+    <ClInclude Include="Lives.h" />
     <ClInclude Include="Res\resource.h" />
+    <ClInclude Include="Score.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\directx.ico" />

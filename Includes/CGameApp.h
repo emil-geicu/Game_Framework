@@ -20,6 +20,7 @@
 #include "Bullet.h"
 #include <list>
 #include <fstream>
+#include "SpriteManipulation.h"
 #include <iterator>
 //-----------------------------------------------------------------------------
 // Forward Declarations
