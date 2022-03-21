@@ -276,6 +276,13 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				break;
 			case 'P':
 				m_pPlayer->RotateRight(m_pBBuffer);
+				break;
+			case'N':
+				ally_pPlayer->RotateLeft(m_pBBuffer);
+				break;
+			case'M':
+				ally_pPlayer->RotateRight(m_pBBuffer);
+				break;
 			}
 			break;
 
@@ -396,6 +403,7 @@ void CGameApp::ProcessInput( )
 {
 	static UCHAR pKeyBuffer[ 256 ];
 	ULONG		Direction = 0;
+	ULONG		Direction2 = 0;
 	POINT		CursorPos;
 	float		X = 0.0f, Y = 0.0f;
 
@@ -407,7 +415,12 @@ void CGameApp::ProcessInput( )
 	if ( pKeyBuffer[ VK_DOWN  ] & 0xF0 ) Direction |= CPlayer::DIR_BACKWARD;
 	if ( pKeyBuffer[ VK_LEFT  ] & 0xF0 ) Direction |= CPlayer::DIR_LEFT;
 	if ( pKeyBuffer[ VK_RIGHT ] & 0xF0 ) Direction |= CPlayer::DIR_RIGHT;
-
+	if (pKeyBuffer['W'] & 0xF0) Direction2 |= CPlayer::DIR_FORWARD;
+	if (pKeyBuffer['S'] & 0xF0) Direction2 |= CPlayer::DIR_BACKWARD;
+	if (pKeyBuffer['A'] & 0xF0) Direction2 |= CPlayer::DIR_LEFT;
+	if (pKeyBuffer['D'] & 0xF0) Direction2 |= CPlayer::DIR_RIGHT;
+	
+	
 	if (pKeyBuffer[VK_SPACE] & 0xF0) {
 		
 		Bullet* b = new Bullet(m_pBBuffer);
@@ -415,9 +428,18 @@ void CGameApp::ProcessInput( )
 		m_pPlayer->FireBullet(b,m_pBBuffer);
 	}
 	
+	if (pKeyBuffer['C'] & 0xF0) {
+
+		Bullet* b = new Bullet(m_pBBuffer);
+		bullet.push_back(b);
+		ally_pPlayer->FireBullet(b, m_pBBuffer);
+	}
 	// Move the player
+
 	m_pPlayer->Collsion(ally_pPlayer);
+	ally_pPlayer->Collsion(m_pPlayer);
 	m_pPlayer->Move(Direction);
+	ally_pPlayer->Move(Direction2);
 
 	
 	
