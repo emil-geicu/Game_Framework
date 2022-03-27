@@ -16,6 +16,9 @@
 #include "Main.h"
 #include "Sprite.h"
 #include "Bullet.h"
+#include "Score.h"
+#include "Lives.h"
+#include <deque>
 #include "SpriteManipulation.h"
 //-----------------------------------------------------------------------------
 // Main Class Definitions
@@ -47,7 +50,7 @@ public:
 	//-------------------------------------------------------------------------
 	// Constructors & Destructors for This Class.
 	//-------------------------------------------------------------------------
-			 CPlayer(const BackBuffer *pBackBuffer);
+			 CPlayer(const BackBuffer *pBackBuffer,int scorePosition);
 	virtual ~CPlayer();
 
 	//-------------------------------------------------------------------------
@@ -67,20 +70,28 @@ public:
 	void RotateRight(const BackBuffer* pBackBuffer);
 
 	void Collsion(CPlayer* player2);
+	void deleteLife();
+	bool isAlive() { return alive; }
+	bool CurrentlyExploding() { return m_bExplosion; }
+	void incrementScore(int i) { scorey += i; score->setScore(scorey); }
+	void setScore(int i) { scorey = i; score->setScore(scorey); }
+	int  getScore() { return scorey; }
 
 private:
 	//-------------------------------------------------------------------------
 	// Private Variables for This Class.
 	//-------------------------------------------------------------------------
-	Sprite*					m_pSprite;
+	//Sprite*					m_pSprite;
 	ESpeedStates			m_eSpeedState;
 	float					m_fTimer;
 	DIRECTION				planeDirection;
 	bool					m_bExplosion;
 	AnimatedSprite*			m_pExplosionSprite;
 	int						m_iExplosionFrame;
-	
-
+	int scorePosition;
+	int scorey;
+	Score* score;
+	std::deque<Lives*> lives;
 	bool					alive;
 };	
 

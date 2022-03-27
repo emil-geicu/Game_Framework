@@ -16,7 +16,7 @@
 // Name : CPlayer () (Constructor)
 // Desc : CPlayer Class Constructor
 //-----------------------------------------------------------------------------
-CPlayer::CPlayer(const BackBuffer *pBackBuffer)
+CPlayer::CPlayer(const BackBuffer *pBackBuffer,int scorePosition)
 {
 	//m_pSprite = new Sprite("data/planeimg.bmp", "data/planemask.bmp");
 	m_pSprite = new Sprite("data/planeimgandmask.bmp", RGB(0xff,0x00, 0xff));
@@ -24,6 +24,8 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer)
 	m_eSpeedState = SPEED_STOP;
 	m_fTimer = 0;
 	planeDirection = DIRECTION::DIR_FORWARD;
+	this->scorePosition = scorePosition;
+
 	// Animation frame crop rectangle
 	RECT r;
 	r.left = 0;
@@ -36,7 +38,15 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer)
 	m_bExplosion		= false;
 	m_iExplosionFrame	= 0;
 
+	//life
+	for (int i = 0; i < 3; i++)
+		lives.push_front(new Lives(pBackBuffer, i * 70 + 150 + this->scorePosition));
+
+	score = new Score(pBackBuffer, this->scorePosition);
+	scorey = 0;
+
 	alive = true;
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -54,6 +64,7 @@ void CPlayer::Update(float dt)
 	// Update sprite
 	m_pSprite->update(dt);
 
+	SpriteManipulation::Update(dt);
 
 	// Get velocity
 	double v = m_pSprite->mVelocity.Magnitude();
@@ -102,9 +113,18 @@ void CPlayer::Update(float dt)
 void CPlayer::Draw()
 {
 	if(!m_bExplosion)
-		m_pSprite->draw();
+			m_pSprite->draw();
 	else
 		m_pExplosionSprite->draw();
+
+	
+	//draw lives
+	if (alive) {
+		for (auto& it : lives)
+			it->Draw();
+
+		score->Draw();
+	}
 }
 
 void CPlayer::Move(ULONG ulDirection)
@@ -158,6 +178,9 @@ void CPlayer::Explode()
 	m_pExplosionSprite->SetFrame(0);
 	PlaySound("data/explosion.wav", NULL, SND_FILENAME | SND_ASYNC);
 	m_bExplosion = true;
+	m_pSprite->mVelocity = Vec2(0, 0);
+	deleteLife();
+
 }
 
 bool CPlayer::AdvanceExplosion()
@@ -281,4 +304,17 @@ void CPlayer::Collsion(CPlayer* player2) {
 	
 	}
 
+}
+void CPlayer::deleteLife()
+{
+	if (lives.size())
+	{
+		delete lives[0];
+		lives.erase(lives.begin());
+	}
+	else
+	{
+		alive = false;
+		exit(1);
+	}
 }

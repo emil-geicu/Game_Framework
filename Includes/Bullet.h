@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 #include "Main.h"
 #include "Sprite.h"
+#include "SpriteManipulation.h"
 #include <list>
 //-----------------------------------------------------------------------------
 // Main Class Definitions
@@ -14,7 +15,7 @@
 // Name : CPlayer (Class)
 // Desc : Player class handles all player manipulation, update and management.
 //-----------------------------------------------------------------------------
-class Bullet
+class Bullet:public SpriteManipulation
 {
 public:
 	//-------------------------------------------------------------------------
@@ -55,7 +56,7 @@ private:
 	//-------------------------------------------------------------------------
 	// Private Variables for This Class.
 	//-------------------------------------------------------------------------
-	Sprite* m_pSprite;
+	//Sprite* m_pSprite;
 	ESpeedStates			m_eSpeedState;
 	float					m_fTimer;
 	

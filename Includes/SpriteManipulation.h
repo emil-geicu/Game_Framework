@@ -14,8 +14,8 @@ protected:
 public:
 	Vec2& Position() { return m_pSprite->mPosition; }
 	Vec2& Velocity() { return m_pSprite->mVelocity; }
-	int sHeight() { return m_pSprite->height(); }
-	int sWidth() { return m_pSprite->width(); }
+	int spriteHeight() { return m_pSprite->height(); }
+	int spriteWidth() { return m_pSprite->width(); }
 	void Update(float dt);
 	void Draw();
 

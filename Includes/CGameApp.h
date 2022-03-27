@@ -22,6 +22,8 @@
 #include <fstream>
 #include "SpriteManipulation.h"
 #include <iterator>
+#include <deque>
+#include "Crate.h"
 //-----------------------------------------------------------------------------
 // Forward Declarations
 //-----------------------------------------------------------------------------
@@ -66,6 +68,10 @@ private:
 	void		DrawObjects	   ( );
 	void		loadGame();
 	void		SaveGame();
+	bool CollisionFlag(SpriteManipulation& obj1, SpriteManipulation& obj2);
+
+	void ObjectCollision();
+	
 	void		ProcessInput	  ( );
 	
 	//-------------------------------------------------------------------------
@@ -99,6 +105,9 @@ private:
 	CPlayer*				m_pPlayer;
 	CPlayer*				ally_pPlayer;
 	std::list<Bullet*>		bullet;
+	std::deque<Crate*>		crates;
+	int rollingBackgrondPos = -m_nViewHeight;
+
 	
 };
 

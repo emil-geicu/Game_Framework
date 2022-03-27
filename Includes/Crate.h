@@ -1,5 +1,5 @@
-#ifndef __CRATE_H__
-#define __CRATE_H__
+#ifndef _CRATE_H_
+#define _CRATE_H_
 #include "SpriteManipulation.h"
 
 class Crate : public SpriteManipulation {

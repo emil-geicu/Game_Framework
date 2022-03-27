@@ -1,22 +1,22 @@
-#ifndef __SCORE_H__
-#define __SCORE_H_
+#ifndef _SCORE_H_
+#define _SCORE_H_
 
 #include "Sprite.h"
 #include <string>
 #include <deque>
 
 class Score {
-	int val;
-	int transl;
+	int counter;
+	int positionShow;
 	const BackBuffer* pBackBuffer;
 	std::deque<Sprite*>digits;
 
 public:
 	Score(const BackBuffer* Buffer, int tr);
 	virtual ~Score();
-	void setScore(int i) { val = i; }
+	void setScore(int i) { counter = i; }
 	void Draw();
-	void initScore();
+	void constructScore();
 };
 
 

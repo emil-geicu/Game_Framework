@@ -10,7 +10,7 @@
 // CGameApp Specific Includes
 //-----------------------------------------------------------------------------
 #include "CGameApp.h"
-
+#include <time.h>
 extern HINSTANCE g_hInst;
 
 //-----------------------------------------------------------------------------
@@ -293,7 +293,7 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				if(!m_pPlayer->AdvanceExplosion())
 					KillTimer(m_hWnd, 1);
 				if(!ally_pPlayer->AdvanceExplosion())
-					KillTimer(m_hWnd, 1);
+					KillTimer(m_hWnd, 2);
 			}
 			break;
 
@@ -315,10 +315,17 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 bool CGameApp::BuildObjects()
 {
 	m_pBBuffer = new BackBuffer(m_hWnd, m_nViewWidth, m_nViewHeight);
-	m_pPlayer = new CPlayer(m_pBBuffer);
-	ally_pPlayer = new CPlayer(m_pBBuffer);
+	m_pPlayer = new CPlayer(m_pBBuffer,0);
+	ally_pPlayer = new CPlayer(m_pBBuffer,400);
+
 	if(!m_imgBackground.LoadBitmapFromFile("data/background.bmp", GetDC(m_hWnd)))
 		return false;
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
+	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
 
 
 	// Success!
@@ -331,6 +338,7 @@ bool CGameApp::BuildObjects()
 //-----------------------------------------------------------------------------
 void CGameApp::SetupGameState()
 {
+	srand(time(NULL));
 	m_pPlayer->Position() = Vec2(100, 400);
 	ally_pPlayer->Position() = Vec2(400, 300);
 	for(auto& it: bullet)
@@ -472,7 +480,11 @@ void CGameApp::AnimateObjects()
 
 	for(auto &it:bullet)
 		it->Update(m_Timer.GetTimeElapsed());
+
+	for (auto& it : crates)
+		it->Update(m_Timer.GetTimeElapsed(),600,800);
 	
+	ObjectCollision();
 }
 
 //-----------------------------------------------------------------------------
@@ -483,10 +495,27 @@ void CGameApp::DrawObjects()
 {
 	m_pBBuffer->reset();
 
-	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, 0);
-	m_pPlayer->Draw();
-	ally_pPlayer->Draw();
 
+	static size_t lastTime ;
+	size_t currentTime = ::GetTickCount64();
+
+	if (currentTime - lastTime > 20) {
+		lastTime = currentTime;
+		rollingBackgrondPos ++;
+		if (rollingBackgrondPos <= m_nViewHeight - 60)
+			rollingBackgrondPos = -m_nViewHeight + 30;
+	}
+
+	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, rollingBackgrondPos+60);
+	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, m_nViewHeight+rollingBackgrondPos + 30);
+
+
+
+	
+
+	//draw crates
+	for (auto &it:crates)
+		it->Draw();
 
 	if (!bullet.empty()) {
 		for (auto it = bullet.begin(); it != bullet.end();)
@@ -504,6 +533,8 @@ void CGameApp::DrawObjects()
 			}
 		}
 	}
+	m_pPlayer->Draw();
+	ally_pPlayer->Draw();
 
 	m_pBBuffer->present();
 }
@@ -521,4 +552,67 @@ void CGameApp::SaveGame() {
 	g << (int)m_pPlayer->Position().x << " " << (int)m_pPlayer->Position().y << std::endl;
 	g << (int)ally_pPlayer->Position().x << " " << (int)ally_pPlayer->Position().y << std::endl;
 	g.close();
+}
+
+
+bool CGameApp::CollisionFlag(SpriteManipulation& obj1, SpriteManipulation& obj2)
+{
+	bool LowerLimit = obj1.Position().y + obj1.spriteHeight() / 2 < obj2.Position().y - obj2.spriteHeight() / 2;//Rect1.Bottom < Rect2.Top
+
+	bool UpperLimit = obj1.Position().y - obj1.spriteHeight() / 2 > obj2.Position().y + obj2.spriteHeight() / 2;//Rect1.Top > Rect2.Bottom
+
+	bool LeftLimit = obj1.Position().x - obj1.spriteWidth() / 2 > obj2.Position().x + obj2.spriteWidth() / 2;//Rect1.Left > Rect2.Right
+
+	bool RightLlimit = obj1.Position().x + obj1.spriteWidth() / 2 < obj2.Position().x - obj2.spriteWidth() / 2;//Rect1.Right < Rect2.Left
+
+	bool collided = !(LowerLimit|| UpperLimit ||  LeftLimit || RightLlimit);
+
+	if (collided)
+	{
+		return true;
+	}
+	return false;
+}
+
+void CGameApp::ObjectCollision()
+{
+	static UINT	fTimer;
+	srand(time(NULL));
+
+	for (auto &i:crates)
+	{
+		if (CollisionFlag(*m_pPlayer, *i) && 
+			!m_pPlayer->CurrentlyExploding()	   && 
+			m_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 1, 100, NULL);
+			m_pPlayer->Explode();
+		}
+
+		if (CollisionFlag(*ally_pPlayer, *i) && 
+			!ally_pPlayer->CurrentlyExploding()		  && 
+			ally_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 2, 100, NULL);
+			ally_pPlayer->Explode();
+		}
+	}
+
+	
+	for (auto &i:crates)
+	{
+		for (auto &it:bullet)
+		{
+			
+			if (CollisionFlag(*i, *it)){
+
+				i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+				m_pPlayer->incrementScore(1);
+				
+			}
+		}
+
+	}
 }

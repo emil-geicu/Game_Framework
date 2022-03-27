@@ -51,13 +51,13 @@
     <ClCompile Include="Source\SpriteManipulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lives.cpp">
+    <ClCompile Include="Source\Crate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Score.cpp">
+    <ClCompile Include="Source\Lives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Crate.cpp">
+    <ClCompile Include="Source\Score.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,13 +101,10 @@
     <ClInclude Include="Includes\SpriteManipulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lives.h">
+    <ClInclude Include="Includes\Crate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Crate.h">
+    <ClInclude Include="Includes\Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
