@@ -25,6 +25,7 @@
 #include <deque>
 #include "Crate.h"
 #include "BonusLives.h"
+#include "Enemy.h"
 //-----------------------------------------------------------------------------
 // Forward Declarations
 //-----------------------------------------------------------------------------
@@ -108,6 +109,7 @@ private:
 	std::list<Bullet*>		bullet;
 	std::deque<Crate*>		crates;
 	std::deque<BonusLives*>		bonusLives;
+	std::deque<Enemy*>		enemies;
 	int rollingBackgrondPos = -m_nViewHeight;
 
 	

@@ -331,6 +331,10 @@ bool CGameApp::BuildObjects()
 	bonusLives.push_front(new BonusLives(m_pBBuffer, rand() % 400));
 	
 
+	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth, m_Timer.GetTimeElapsed()));
+	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth / 2, m_Timer.GetTimeElapsed()));
+	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth / 4, m_Timer.GetTimeElapsed()));
+
 	// Success!
 	return true;
 }
@@ -489,8 +493,22 @@ void CGameApp::AnimateObjects()
 
 	for(auto &it:bonusLives)
 		it->Update(m_Timer.GetTimeElapsed(), 600, 800);
+	// making the enemies to move
+	for (unsigned int i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->Update(m_Timer.GetTimeElapsed(), m_nViewHeight, m_nViewWidth);
+	}
 
-	
+	// making the enemies to shoot every 5 seconds
+	static clock_t current, prev = 0;
+	current = clock();
+	if ((static_cast<double>(current - prev) / CLOCKS_PER_SEC) > 5)
+	{
+		for (unsigned int i = 0; i < enemies.size(); i++)
+			enemies[i]->Shoot(m_pBBuffer);
+		prev = current;
+	}
+
 	ObjectCollision();
 }
 
@@ -542,9 +560,15 @@ void CGameApp::DrawObjects()
 				it++;
 			}
 		}
+
 	}
+	//drawing the enemies
+	for (unsigned int i = 0; i < enemies.size(); i++)
+		enemies[i]->Draw();
+
 	m_pPlayer->Draw();
 	ally_pPlayer->Draw();
+	
 
 	m_pBBuffer->present();
 }
@@ -646,4 +670,59 @@ void CGameApp::ObjectCollision()
 		}
 
 	}
+
+	for (auto& i : enemies)
+	{
+		if (CollisionFlag(*m_pPlayer, *i) &&
+			!m_pPlayer->CurrentlyExploding() &&
+			m_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 1, 100, NULL);
+			m_pPlayer->Explode();
+		}
+
+		if (CollisionFlag(*ally_pPlayer, *i) &&
+			!ally_pPlayer->CurrentlyExploding() &&
+			ally_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 2, 100, NULL);
+			ally_pPlayer->Explode();
+		}
+	}
+	for (auto& i : enemies)
+		for (auto& j : i->bullets)
+		{
+			if (CollisionFlag(*m_pPlayer, *j) &&
+				!m_pPlayer->CurrentlyExploding() &&
+				m_pPlayer->isAlive())
+			{
+				fTimer = SetTimer(m_hWnd, 1, 100, NULL);
+				m_pPlayer->Explode();
+			}
+
+			if (CollisionFlag(*ally_pPlayer, *j) &&
+				!ally_pPlayer->CurrentlyExploding() &&
+				ally_pPlayer->isAlive())
+			{
+				fTimer = SetTimer(m_hWnd, 2, 100, NULL);
+				ally_pPlayer->Explode();
+			}
+		}
+	for (auto& i : enemies)
+	{
+		for (auto& it : bullet)
+		{
+
+			if (CollisionFlag(*i, *it)) {
+
+				i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+				m_pPlayer->incrementScore(10);
+
+			}
+		}
+
+	}
+	
 }

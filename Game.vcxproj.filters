@@ -63,6 +63,9 @@
     <ClCompile Include="Source\BonusLives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Includes\BackBuffer.h">
@@ -113,7 +116,7 @@
     <ClInclude Include="Includes\Lives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BonusLives.h">
+    <ClInclude Include="Includes\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
