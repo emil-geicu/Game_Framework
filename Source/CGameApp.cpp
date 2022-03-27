@@ -328,6 +328,9 @@ bool CGameApp::BuildObjects()
 	crates.push_front(new Crate(m_pBBuffer, rand() % 400));
 
 
+	bonusLives.push_front(new BonusLives(m_pBBuffer, rand() % 400));
+	
+
 	// Success!
 	return true;
 }
@@ -483,6 +486,10 @@ void CGameApp::AnimateObjects()
 
 	for (auto& it : crates)
 		it->Update(m_Timer.GetTimeElapsed(),600,800);
+
+	for(auto &it:bonusLives)
+		it->Update(m_Timer.GetTimeElapsed(), 600, 800);
+
 	
 	ObjectCollision();
 }
@@ -515,6 +522,9 @@ void CGameApp::DrawObjects()
 
 	//draw crates
 	for (auto &it:crates)
+		it->Draw();
+
+	for (auto& it : bonusLives)
 		it->Draw();
 
 	if (!bullet.empty()) {
@@ -597,6 +607,27 @@ void CGameApp::ObjectCollision()
 			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
 			fTimer = SetTimer(m_hWnd, 2, 100, NULL);
 			ally_pPlayer->Explode();
+		}
+	}
+
+	for (auto& i : bonusLives)
+	{
+		if (CollisionFlag(*m_pPlayer, *i) &&
+			!m_pPlayer->CurrentlyExploding() &&
+			m_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 1, 100, NULL);
+			m_pPlayer->addLife(m_pBBuffer);
+		}
+
+		if (CollisionFlag(*ally_pPlayer, *i) &&
+			!ally_pPlayer->CurrentlyExploding() &&
+			ally_pPlayer->isAlive())
+		{
+			i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+			fTimer = SetTimer(m_hWnd, 2, 100, NULL);
+			ally_pPlayer->addLife(m_pBBuffer);
 		}
 	}
 

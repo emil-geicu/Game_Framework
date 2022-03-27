@@ -152,11 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\BackBuffer.cpp" />
+    <ClCompile Include="Source\BonusLives.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
-    <ClCompile Include="Source\CGameApp.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
+    <ClCompile Include="Source\CGameApp.cpp" />
     <ClCompile Include="Source\CPlayer.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -179,6 +177,7 @@
     <ClCompile Include="Source\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BonusLives.h" />
     <ClInclude Include="Includes\BackBuffer.h" />
     <ClInclude Include="Includes\Bullet.h" />
     <ClInclude Include="Includes\CGameApp.h" />
@@ -187,6 +186,7 @@
     <ClInclude Include="Includes\CTimer.h" />
     <ClInclude Include="Includes\Filters.h" />
     <ClInclude Include="Includes\ImageFile.h" />
+    <ClInclude Include="Includes\Lives.h" />
     <ClInclude Include="Includes\Main.h" />
     <ClInclude Include="Includes\ResizeEngine.h" />
     <ClInclude Include="Includes\Score.h" />

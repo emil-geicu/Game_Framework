@@ -40,7 +40,7 @@ CPlayer::CPlayer(const BackBuffer *pBackBuffer,int scorePosition)
 
 	//life
 	for (int i = 0; i < 3; i++)
-		lives.push_front(new Lives(pBackBuffer, i * 70 + 150 + this->scorePosition));
+		lives.push_front(new Lives(pBackBuffer, i * 70 + 120 + this->scorePosition));
 
 	score = new Score(pBackBuffer, this->scorePosition);
 	scorey = 0;
@@ -316,5 +316,12 @@ void CPlayer::deleteLife()
 	{
 		alive = false;
 		exit(1);
+	}
+}
+void CPlayer::addLife(const BackBuffer* pBackBuffer)
+{
+	if (lives.size()<4)
+	{
+		lives.push_front(new Lives(pBackBuffer, lives.size() * 70 + 120 + this->scorePosition));
 	}
 }

@@ -71,6 +71,8 @@ public:
 
 	void Collsion(CPlayer* player2);
 	void deleteLife();
+	void addLife(const BackBuffer* pBackBuffer);
+	
 	bool isAlive() { return alive; }
 	bool CurrentlyExploding() { return m_bExplosion; }
 	void incrementScore(int i) { scorey += i; score->setScore(scorey); }

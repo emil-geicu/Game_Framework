@@ -1,10 +1,11 @@
 #ifndef __LIVES_H__
 #define __LIVES_H__
 #include "Sprite.h"
+#include "SpriteManipulation.h"
 
-class Lives
+class Lives:public SpriteManipulation
 {
-	Sprite* m_pSprite;
+	
 public:
 	Lives(const BackBuffer* BackBuffer, double x);
 	virtual ~Lives(void);

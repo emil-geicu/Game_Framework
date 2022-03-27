@@ -24,6 +24,7 @@
 #include <iterator>
 #include <deque>
 #include "Crate.h"
+#include "BonusLives.h"
 //-----------------------------------------------------------------------------
 // Forward Declarations
 //-----------------------------------------------------------------------------
@@ -106,6 +107,7 @@ private:
 	CPlayer*				ally_pPlayer;
 	std::list<Bullet*>		bullet;
 	std::deque<Crate*>		crates;
+	std::deque<BonusLives*>		bonusLives;
 	int rollingBackgrondPos = -m_nViewHeight;
 
 	
