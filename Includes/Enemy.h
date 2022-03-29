@@ -19,12 +19,9 @@ public:
 	Enemy(const BackBuffer* pBackBuffer, int x, float dt);
 	virtual ~Enemy();
 
-	void			Update(float dt, ULONG height, ULONG width);
+	void			Update(float dt);
 	void			Draw();
 	void			Shoot(const BackBuffer* pBackBuffer);
-
-	unsigned int	NoOfBullets() { return bullets.size(); }
-	Bullet* getBullet(int i) { return bullets[i]; }
 	void			deleteBullet(int i);
 };
 

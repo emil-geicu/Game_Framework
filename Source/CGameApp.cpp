@@ -11,6 +11,7 @@
 //-----------------------------------------------------------------------------
 #include "CGameApp.h"
 #include <time.h>
+#include <thread>
 extern HINSTANCE g_hInst;
 
 //-----------------------------------------------------------------------------
@@ -333,8 +334,6 @@ bool CGameApp::BuildObjects()
 
 	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth, m_Timer.GetTimeElapsed()));
 	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth / 2, m_Timer.GetTimeElapsed()));
-	enemies.push_front(new Enemy(m_pBBuffer, (int)m_nViewWidth / 4, m_Timer.GetTimeElapsed()));
-
 	// Success!
 	return true;
 }
@@ -493,19 +492,22 @@ void CGameApp::AnimateObjects()
 
 	for(auto &it:bonusLives)
 		it->Update(m_Timer.GetTimeElapsed(), 600, 800);
-	// making the enemies to move
-	for (unsigned int i = 0; i < enemies.size(); i++)
+
+	for (auto &it:enemies)
 	{
-		enemies[i]->Update(m_Timer.GetTimeElapsed(), m_nViewHeight, m_nViewWidth);
+		it->Update(m_Timer.GetTimeElapsed());
 	}
 
-	// making the enemies to shoot every 5 seconds
-	static clock_t current, prev = 0;
-	current = clock();
-	if ((static_cast<double>(current - prev) / CLOCKS_PER_SEC) > 5)
+	
+	static int prev = 0;
+	int current = clock();
+	if (((current - prev) / CLOCKS_PER_SEC) > 2)
 	{
-		for (unsigned int i = 0; i < enemies.size(); i++)
-			enemies[i]->Shoot(m_pBBuffer);
+		for (int i = 0; i < enemies.size(); i++)
+		{
+				enemies[i]->Shoot(m_pBBuffer);
+			
+		}
 		prev = current;
 	}
 
@@ -521,18 +523,18 @@ void CGameApp::DrawObjects()
 	m_pBBuffer->reset();
 
 
-	static size_t lastTime ;
-	size_t currentTime = ::GetTickCount64();
+	static int lastTime ;
+	int currentTime =clock();
 
 	if (currentTime - lastTime > 20) {
 		lastTime = currentTime;
 		rollingBackgrondPos ++;
-		if (rollingBackgrondPos <= m_nViewHeight - 60)
-			rollingBackgrondPos = -m_nViewHeight + 30;
+		if (rollingBackgrondPos <= m_nViewHeight)
+			rollingBackgrondPos = -m_nViewHeight;
 	}
 
-	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, rollingBackgrondPos+60);
-	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, m_nViewHeight+rollingBackgrondPos + 30);
+	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, rollingBackgrondPos);
+	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, m_nViewHeight+rollingBackgrondPos);
 
 
 
@@ -717,7 +719,8 @@ void CGameApp::ObjectCollision()
 
 			if (CollisionFlag(*i, *it)) {
 
-				i->Position() = Vec2(rand() % 800, i->spriteHeight() / 2);
+				i->Position().x = rand() % 800;
+				i->Position().y = 100;
 				m_pPlayer->incrementScore(10);
 
 			}
